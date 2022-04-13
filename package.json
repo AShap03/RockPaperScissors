@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "csprng": "^0.1.2",
+    "random": "^3.0.6",
+    "readline-sync": "^1.4.10"
+  }
 }
