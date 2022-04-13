@@ -1,20 +1,20 @@
 const readlineSync = require("readline-sync");
 const rand = require('csprng');
 const crypto = require("crypto");
-
+const allMovesarray = process.argv.slice(2);
 
 class Table {
     printHelp(data, rules) {
-        let x = [];
+        let rulesArr = [];
         for (let j in data) {
             let i = 0;
-            x.push(rules[j].reduce(function(target, key) {
+            rulesArr.push(rules[j].reduce(function(target, key) {
                 target[data[i++]] = key;
                 return target;
             }, {}));
         }
         let i = 0;
-        let table = x.reduce(function(target, key) {
+        let table = rulesArr.reduce(function(target, key) {
             target[data[i++]] = key;
             return target;
         }, {})
@@ -92,8 +92,9 @@ class Main {
     isKeyValid(userKey, data) {
         if (userKey == '0') {
             console.log("Goodbye!");
+            console.log('');
         } else if (userKey != "?" && !(userKey >= '0' && userKey <= data)) {
-            console.log('Wrong move!');
+            console.log(`The move is not correct.\nYou need to enter a number from "1" to "${allMovesarray.length}" to move or "0" to exit, or "?" for help`);
             return false;
         }
         return true;
@@ -109,7 +110,7 @@ class Main {
                 table = new Table();
 
             let hash = new HMAC(move);
-            console.log("HMAC-SHA256: " + hash.generateHMAC());
+            console.log("HMAC: " + hash.generateHMAC());
             this.menu(inputData);
             userMove = this.askQuestion("Enter your move: ");
             if (this.isKeyValid(userMove,inputData.length))
@@ -120,7 +121,7 @@ class Main {
                     console.log(`Computer move: ${move}`);
                     console.log(rules[userMove - 1][inputData.lastIndexOf(move)]);
                     console.log(`HMAC key: ${hash.key}`);
-                    console.log("NEXT GAME");
+                    console.log("\nNEXT GAME");
                 }
         }
     }
